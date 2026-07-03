@@ -28,9 +28,8 @@ collection.add(
 )
 
 result = collection.query(
-    query_texts=["how to reset password?"],
+    query_texts=["how to reset password?","issue in billing","how to change email address?"],
     where = {"source": "kb_docs"}
     
-
 )
 print(result)

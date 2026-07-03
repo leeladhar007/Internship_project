@@ -8,9 +8,9 @@ from config import(
     DB_HOST,
     DB_NAME
 )
-engine = create_engine(f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    pool_recycle = 3600
-)
+engine = create_engine(f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
+    pool_recycle = 3600)
+
 
 
 SessionLocal = sessionmaker(
