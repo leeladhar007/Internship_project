@@ -3,7 +3,7 @@ import os
 
  
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
-DB_USERNASME= os.getenv("DB_USERNASME")
+DB_USERNAME= os.getenv("DB_USERNAME")
 DB_PASSWORD= os.getenv("DB_PASSWORD")
 DB_PORT= os.getenv("DB_PORT")
 DB_HOST= os.getenv("DB_HOST")
