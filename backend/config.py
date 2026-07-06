@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
  
 OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
 DB_USERNAME= os.getenv("DB_USERNAME")

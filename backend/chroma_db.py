@@ -9,6 +9,7 @@ embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name=("all-MiniLM-L6-v2")
     )
 
+
 client = chromadb.PersistentClient(path = "./chroma_storage")
 collection = client.get_or_create_collection(
     name="knowledge_base_2",
@@ -16,20 +17,21 @@ collection = client.get_or_create_collection(
     
     )
 
-file_path = Path("backend\\kb_docs.pkl")
+file_path = Path("kb_docs.pkl")
 
 with open(file_path, "rb") as f:
     kB_docs= pickle.load(f)
 
 collection.add(
-     ids = [docs["ids"] for docs in kB_docs],
-     documents = [docs["document"] for docs in kB_docs], 
-     metadatas = [{"source": "kb_docs"}] *len(kB_docs)
+    ids=[str(i) for i in range(len(kB_docs))],
+    documents=kB_docs,
+    metadatas=[{"source": "kb_docs"} for _ in kB_docs]
 )
+
 
 result = collection.query(
     query_texts=["how to reset password?","issue in billing","how to change email address?"],
-    where = {"source": "kb_docs"}
-    
+    where = {"source": "kb_docs"},
+    n_results=10
 )
 print(result)
