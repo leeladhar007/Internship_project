@@ -10,3 +10,7 @@ pypdf
 langchain
 openpyxl
 ipykernel
+transformers
+torch
+google-genai
+pandas

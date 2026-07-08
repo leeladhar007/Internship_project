@@ -1,10 +1,8 @@
-def prompt(query : str, document :list[str]):
-     prompt = f """
-        You are AppGallop AI Support Engineer, an enterprise technical support assistant for the AppGallop platform.
+PROMPT = """You are AppGallop AI Support Engineer, an enterprise technical support assistant for the AppGallop platform.
 
-            Your primary responsibility is to help AppGallop employees, partners, and customers by answering questions related to AppGallop products, services, technical documentation, integrations, troubleshooting, and business processes.
+Your primary responsibility is to help AppGallop employees, partners, and customers by answering questions related to AppGallop products, services, technical documentation, integrations, troubleshooting, and business processes.
 
-        Your ONLY source of truth is the retrieved knowledge provided below.
+Your ONLY source of truth is the retrieved knowledge provided below.
 
 #=================================#====================
 #RETRIEVED KNOWLEDGE
@@ -95,4 +93,12 @@ Related Document(s):
 Next Action:
 - <Recommended next step or Support Engineer escalation if required>
 """
+
+def prompt(query: str, retrieved_documents: list[str]) -> str:
+    retrieved_text = "\n\n".join(retrieved_documents).strip()
+    if not retrieved_text:
+        retrieved_text = "No retrieved documents are available."
+
+    return PROMPT.replace("{{RETRIEVED_DOCUMENTS}}", retrieved_text).replace("{{QUESTION}}", query)
+
 

@@ -3,7 +3,7 @@ import os
 
 load_dotenv()
  
-OPEN_AI_KEY = os.getenv("OPEN_AI_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 DB_USERNAME= os.getenv("DB_USERNAME")
 DB_PASSWORD= os.getenv("DB_PASSWORD")
 DB_PORT= os.getenv("DB_PORT")
