@@ -102,3 +102,4 @@ def prompt(query: str, retrieved_documents: list[str]) -> str:
     return PROMPT.replace("{{RETRIEVED_DOCUMENTS}}", retrieved_text).replace("{{QUESTION}}", query)
 
 
+
