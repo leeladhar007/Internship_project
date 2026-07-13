@@ -11,21 +11,24 @@ def ticket(
     ticket_request : Ticketrequest,
     db: Session = Depends(get_db)
 ):
+ 
  result = process_ticket(ticket_request.query)
  new_ticket = Ticket(
   query = ticket_request.query,
   answer = result["answer"],
-  status = "Resolved"
+  status = "Resolved",
+  sentiment= result["sentiment"]
  )
+
  db.add(new_ticket)
  db.commit()
  db.refresh(new_ticket)
  return Ticketresponse(
   answer = result["answer"],
   ticket_no = new_ticket.id,
-  date_generated = new_ticket.created_at
+  date_generated = new_ticket.created_at,
+  sentiment = new_ticket.sentiment
   
-      
  )
     
 

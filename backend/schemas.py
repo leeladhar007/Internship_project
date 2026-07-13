@@ -9,5 +9,6 @@ class Ticketresponse(BaseModel):
     answer : str
     ticket_no : int
     date_generated :datetime
+    sentiment : str
 
         

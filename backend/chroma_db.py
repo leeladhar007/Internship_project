@@ -19,18 +19,12 @@ if collection.count()== 0:
 
     df = pd.read_csv("sample.csv")    
     df.drop_duplicates(inplace=True)
-
     df_docs = pd.read_excel("sample1.xlsx")
     df_docs.drop_duplicates(inplace=True)
-
     kb_1_docs = pd.read_excel("KnowledgeBase.xlsx")
     kb_1_docs.drop_duplicates(inplace=True)
-
     ttns_docs = pd.read_excel("TTNS_Ticket_details.xlsx")
     ttns_docs.drop_duplicates(inplace=True)
-
-
-
     file_path = Path("kb_docs.pkl")
     
     with open(file_path, "rb") as f:
@@ -38,19 +32,19 @@ if collection.count()== 0:
     
     csv_docs = []
     
-    for index, row in df.iterrows():
+    for index,row in df.iterrows():
         text = "\n".join([f"{col}: {row[col]}" for col in df.columns])
         csv_docs.append(text)
     
     excel_docs = []
     
-    for index, row in df_docs.iterrows():
+    for index,row in df_docs.iterrows():
         text = "\n".join([f"{col}: {row[col]}" for col in df_docs.columns])
         excel_docs.append(text)
     
     kb_excel_docs = []
     
-    for index, row in kb_1_docs.iterrows():
+    for index,row in kb_1_docs.iterrows():
         text = "\n".join([f"{col}: {row[col]}" for col in kb_1_docs.columns])
         kb_excel_docs.append(text)
     
@@ -67,15 +61,16 @@ if collection.count()== 0:
     documents.extend(kb_excel_docs)
     documents.extend(ttns_docs_1)
     
-    metadatas = [{"source": "kb_docs"} for index in documents]
-    
-    
+    metadatas = (
+        [{"source": "kb_docs"} for _ in kB_docs] +
+        [{"source": "sample"} for _ in csv_docs] +
+        [{"source": "sample1"} for _ in excel_docs] +
+        [{"source": "KnowledgeBase"} for _ in kb_excel_docs] +
+        [{"source": "TTNS_Ticket_details"} for _ in ttns_docs_1]
+    )
     ids = [str(i) for i in range(len(documents))]
-    
-    
     collection.add(
         ids=ids,
         documents=documents,
         metadatas=metadatas
     )
-

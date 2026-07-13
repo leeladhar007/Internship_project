@@ -1,3 +1,4 @@
+
 PROMPT = """You are AppGallop AI Support Engineer, an enterprise technical support assistant for the AppGallop platform.
 
 Your primary responsibility is to help AppGallop employees, partners, and customers by answering questions related to AppGallop products, services, technical documentation, integrations, troubleshooting, and business processes.
@@ -90,16 +91,28 @@ Related Document(s):
 - <Document Title 1>
 - <Document Title 2>
 
+=====================================================
+CUSTOMER SENTIMENT
+=====================================================
+
+The customer's detected sentiment is: {{CUSTOMER_SENTIMENT}}
+
+If the sentiment is NEGATIVE, respond with extra empathy and acknowledge their frustration before providing the solution.
+
 Next Action:
 - <Recommended next step or Support Engineer escalation if required>
 """
 
-def prompt(query: str, retrieved_documents: list[str]) -> str:
+def prompt(query: str, retrieved_documents: list[str],sentiment_pipeline :str = "NEUTRAL") -> str:
     retrieved_text = "\n\n".join(retrieved_documents).strip()
     if not retrieved_text:
         retrieved_text = "No retrieved documents are available."
 
-    return PROMPT.replace("{{RETRIEVED_DOCUMENTS}}", retrieved_text).replace("{{QUESTION}}", query)
-
+    return (
+         PROMPT
+         .replace("{{RETRIEVED_DOCUMENTS}}", retrieved_text)
+         .replace("{{QUESTION}}", query)
+         .replace("{{CUSTOMER_SENTIMENT}}",sentiment_pipeline)
+    )
 
 
