@@ -9,8 +9,9 @@ import models
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title = "AI knowledge base",
-    version = "1.0.0"
+    title="AI knowledge base",
+    version="1.0.0",
+    openapi_version="3.0.3",
 )
 app.add_middleware(
     CORSMiddleware,

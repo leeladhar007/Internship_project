@@ -1,6 +1,7 @@
-from sqlalchemy import VARCHAR, Column, Integer, Text, TIMESTAMP
+from sqlalchemy import VARCHAR, Column, Integer, Text, TIMESTAMP ,ForeignKey
 from sqlalchemy.sql import func
 from database import Base
+
 
 class Ticket(Base):
     __tablename__ = "tickets"
@@ -11,23 +12,20 @@ class Ticket(Base):
     sentiment = Column(VARCHAR(20))
     created_at = Column(TIMESTAMP, server_default=func.now())
 
-# class chat_session(Base):
-#     __tablename__ = "chat_session"
-#     session_id = Column(Integer,primary_key=True, autoincrement=True)
-#     user_id = Column(VARCHAR(20))
-#     status = Column(VARCHAR(20), default="OPEN")
-#     created_at = Column()
-#     updated_at = Column()
-# created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-# updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+class chatsession(Base):
+    __tablename__ = "chat_sessions"
+    session_id = Column(Integer,primary_key=True, autoincrement=True)
+    user_id = Column(VARCHAR(20))
+    status = Column(VARCHAR(20), default="ACTIVE")
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_onupdate=func.now())
 
-# class chat_messages(Base):
-#     __tablename__ = "chat_messages"
-#     id =
-#     session_id =
-#     sender =
-#     message =
-#     created_at =
-    
+class chatmessages(Base):
+    __tablename__ = "chat_messages"
+    id = Column(Integer, primary_key=True , autoincrement=True)
+    session_id = Column(Integer,ForeignKey("chat_sessions.session_id"),nullable=False)
+    sender =Column(VARCHAR(20), nullable=False)
+    message =Column(Text, nullable=False)
+    created_at =Column(TIMESTAMP,server_default=func.now())
 
 

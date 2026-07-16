@@ -1,0 +1,72 @@
+Case Studies  of appgallop
+Enterprise outcomes across commerce, billing, and legacy operations.
+Explore the full case study, then move directly into another transformation story or return to the case study library.
+
+Cloud distribution
+Telecom integration
+Revenue operations
+Partner lifecycle
+Back to case studies
+Jio Platforms Limited
+Telecom and Digital Services
+
+Enterprise telco case
+Jio Platforms Limited: OMNI services integration with telco legacy systems
+Multi-service integration
+
+OSS/BSS
+
+legacy integration
+
+750+
+
+support users
+
+4-level
+
+ticket taxonomy
+
+AR/AP
+
+accounting entries
+
+A telco-grade OMNI services platform that connected new digital service journeys with legacy OSS/BSS, CRM, ERP, billing, taxation, accounting, service assurance, support, logistics, and rule-management systems.
+
+Challenge
+
+Introducing a new platform into a legacy telco ecosystem
+The platform had to integrate with core OSS/BSS, service desk, CRM, ERP, third-party applications, and telco operational systems.
+
+Compliance requirements covered internal processes, external rules, accounting entries, tax, credit policy, service rules, SLA, and customer data handling.
+
+The business needed a single window for supplier pricing, market pricing, service sales, invoicing, billing, collections, and support operations.
+
+Solution
+
+SOA-based enterprise platform with API-led service integration
+AppGallop connected cloud, services, and subscription offering journeys with legacy telco systems through an SOA-based integration layer that reduced load on parent platforms.
+
+The platform generated accounting entries for AR, AP, TDS, payments, reversals, settlements, partial refunds, credit notes, debit notes, customer segmentation, and credit-policy controls.
+
+Support operations were integrated with NSD, SLA processes, customer-segment queues, ticket routing rules, auto/manual assignment, escalation paths, and service assurance workflows.
+
+Outcomes
+
+Automated customer onboarding and verification
+
+GST, TDS, reversals, credit notes, and credit-policy compliance
+
+Payment received and reconciliation workflows
+
+Invoicing, billing, rating, charging, dunning, and split-invoice rules
+
+Integrations across Enable Service, MACD, VAS, roster management, service assurance, and logistics
+
+Unified operating visibility across supplier pricing, market pricing, sales, invoicing, collections, and support operations
+
+Legacy integration
+OSS/BSS
+Service desk
+"The platform now works as a connected operating layer between new digital services and legacy telco systems."
+
+Enterprise telco integration case

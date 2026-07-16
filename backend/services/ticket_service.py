@@ -6,7 +6,6 @@ from services.sentiment_analysis import analyze_sentiment
 def process_ticket(user_query):
 
   sentiment_result = analyze_sentiment(user_query)
-  # sentiment_result is a dict like {"label": "POSITIVE", "score": 0.97}
   sentiment_label = sentiment_result.get("label")
 
   retrieval_result = retrieve_documents(user_query)
