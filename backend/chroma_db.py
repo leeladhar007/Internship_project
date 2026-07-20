@@ -2,11 +2,13 @@ import chromadb
 from chromadb.utils import embedding_functions
 import pickle
 from pathlib import Path
-import pandas as pd
+import polars as pl
 
 embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="all-MiniLM-L6-v2"
 )
+
+
 client = chromadb.PersistentClient(path="./chroma_storage")
 
 collection = client.get_or_create_collection(
@@ -17,14 +19,14 @@ collection = client.get_or_create_collection(
 
 if collection.count()== 0:
 
-    df = pd.read_csv("sample.csv")    
-    df.drop_duplicates(inplace=True)
-    df_docs = pd.read_excel("sample1.xlsx")
-    df_docs.drop_duplicates(inplace=True)
-    kb_1_docs = pd.read_excel("KnowledgeBase.xlsx")
-    kb_1_docs.drop_duplicates(inplace=True)
-    ttns_docs = pd.read_excel("TTNS_Ticket_details.xlsx")
-    ttns_docs.drop_duplicates(inplace=True)
+    df = pl.read_csv("sample.csv")    
+    df = df.unique()
+    df_docs = pl.read_excel("sample1.xlsx")
+    df_docs = df_docs.unique()
+    kb_1_docs = pl.read_excel("KnowledgeBase.xlsx")
+    kb_1_docs = kb_1_docs.unique()
+    ttns_docs = pl.read_excel("TTNS_Ticket_details.xlsx")
+    ttns_docs = ttns_docs.unique()
     file_path = Path("kb_docs.pkl")
     
     with open(file_path, "rb") as f:
@@ -32,27 +34,27 @@ if collection.count()== 0:
     
     csv_docs = []
     
-    for index,row in df.iterrows():
-        text = "\n".join([f"{col}: {row[col]}" for col in df.columns])
-        csv_docs.append(text)
+    for row in df.iter_rows(named=True):
+        row_text = ". ".join([f"{col}: {val}" for col,val in row.items() if val is not None and str(val).lower() != 'none'])
+        csv_docs.append(row_text)
     
     excel_docs = []
-    
-    for index,row in df_docs.iterrows():
-        text = "\n".join([f"{col}: {row[col]}" for col in df_docs.columns])
-        excel_docs.append(text)
+
+    for row in df_docs.iter_rows(named=True):
+        row_text = ". ".join([f"{col}: {val}" for col,val in row.items() if val is not None and str(val).lower() != 'none'])
+        excel_docs.append(row_text)
     
     kb_excel_docs = []
     
-    for index,row in kb_1_docs.iterrows():
-        text = "\n".join([f"{col}: {row[col]}" for col in kb_1_docs.columns])
-        kb_excel_docs.append(text)
-    
+    for row in kb_1_docs.iter_rows(named=True):
+        row_text = ". ".join([f"{col}: {val}" for col,val in row.items() if val is not None and str(val).lower() != 'none'])
+        kb_excel_docs.append(row_text)
+
     ttns_docs_1 = []
     
-    for index,row in ttns_docs.iterrows():
-        text = "\n".join([f"{col}: {row[col]}"for col in ttns_docs.columns])
-        ttns_docs_1.append(text)
+    for row in ttns_docs.iter_rows(named=True):
+        row_text = ". ".join([f"{col}: {val}" for col,val in row.items() if val is not None and str(val).lower() != 'none'])
+        ttns_docs_1.append(row_text)
     
     documents = []
     documents.extend(kB_docs)

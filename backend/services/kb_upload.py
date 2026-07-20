@@ -33,12 +33,9 @@ def read_csv(file_path: Path):
     df.drop_duplicates(inplace=True)
 
     docs = []
-    for _, row in df.iterrows():
-        text = "\n".join(
-            f"{column}: {row[column]}"
-            for column in df.columns
-        )
-        docs.append(text)
+    for index,row in df.iterrows():
+        row_text = "|".join([f"{col}:{val}" for col,val in row.items()])
+        docs.append(row_text)
 
     return docs
 
@@ -47,12 +44,9 @@ def read_excel(file_path: Path):
     df.drop_duplicates(inplace=True)
 
     docs = []
-    for _, row in df.iterrows():
-        text = "\n".join(
-            f"{column}: {row[column]}"
-            for column in df.columns
-        )
-        docs.append(text)
+    for index,row in df.iterrows():
+        row_text = "|".join([f"{col}:{val}" for col,val in row.items()])
+        docs.append(row_text)
 
     return docs
 

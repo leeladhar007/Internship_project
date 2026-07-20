@@ -8,7 +8,6 @@ def retrieve_documents(user_query: str, n_results: int = 10):
     )
 
     return {
-        
         "documents": results["documents"][0],
         "metadatas": results["metadatas"][0],
         "distances": results["distances"][0]

@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from api.health import health_router
 from api.chat import chat_router
 from api.load_kb import load_kb_router
+from api.auth import auth_router
+from api.feedback import feedback_router
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 
@@ -24,3 +26,5 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(chat_router)
 app.include_router(load_kb_router)
+app.include_router(auth_router)
+app.include_router(feedback_router)
