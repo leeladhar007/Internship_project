@@ -39,17 +39,15 @@ async def file_upload(uploaded_files: List[UploadFile] = File(...)):
                 f.write(content)
             documents = read_file(file_path)
         
-            add_documents(
-            documents=documents,
-            source=filename
-            )
+
             add_result = add_documents(
             documents=documents,
             source=filename
-            )    
+            )
+
             result.append({
-                "file_name" : filename,
-                "status" : "uploaded successfully",
+                "file_name": filename,
+                "status": "uploaded successfully",
                 "chunks_added": add_result["documents_added"]
             })
         
