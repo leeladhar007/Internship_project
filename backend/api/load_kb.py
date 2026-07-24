@@ -20,7 +20,7 @@ async def file_upload(uploaded_files: List[UploadFile] = File(...)):
         print(filename)
 
         
-        extension = Path(filename).suffix.lower()
+        extension = Path(filename).suffix.lower() # type: ignore
 
         if extension in ALLOWED_EXTENSIONS:
 
@@ -34,7 +34,7 @@ async def file_upload(uploaded_files: List[UploadFile] = File(...)):
                 continue
 
 
-            file_path = UPLOAD_DIR / filename
+            file_path = UPLOAD_DIR / filename # type: ignore
             with open(file_path,"wb") as f:
                 f.write(content)
             documents = read_file(file_path)

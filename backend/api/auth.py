@@ -42,7 +42,7 @@ async def create_user(
     if existing_user:
         raise HTTPException(
             status_code=400,
-            detail="Username already exists."
+            detail="Username already exists.\n Please enter your credentials to login"
         )
 
     new_user = Users(

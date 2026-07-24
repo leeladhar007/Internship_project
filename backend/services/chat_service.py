@@ -1,3 +1,5 @@
+import json
+
 from services.retrieval import retrieve_documents
 from services.prompt import prompt
 from services.llm import generate_answer
@@ -5,6 +7,27 @@ from services.sentiment_analysis import analyze_sentiment
 from sqlalchemy.orm import Session
 from datetime import datetime
 from models import chatsession
+
+
+def extract_llm_json(raw_output: str) -> dict:
+    """
+    The LLM is prompted to return a JSON object like:
+    {"session_id": ..., "answer": ..., "related_documents": [...],
+     "next_action": ..., "sentiment": ..., "intent": ...}
+    but sometimes wraps it in ```json ... ``` fences, and can occasionally
+    fail to return valid JSON at all. Handle both.
+    """
+    cleaned = raw_output.strip()
+    if cleaned.startswith("```"):
+        cleaned = cleaned.split("```")[1]
+        if cleaned.startswith("json"):
+            cleaned = cleaned[4:]
+        cleaned = cleaned.strip()
+
+    try:
+        return json.loads(cleaned)
+    except (json.JSONDecodeError, TypeError):
+        return {}
 
 
 def process_chat_messages(
@@ -35,29 +58,24 @@ def process_chat_messages(
         conversation_history=conversation
     )
 
-    answer = generate_answer(final_prompt)
-    # raw_output = generate_answer(final_prompt)
-    # print("=== RAW GEMINI OUTPUT ===")
-    # print(repr(raw_output))
-    # print("=========================")
+    raw_output = generate_answer(final_prompt)
+    parsed = extract_llm_json(raw_output)
 
-    # print("=== RETRIEVED DOCS ===")
-    # print(retrieval_result["documents"])
-    # print("=======================")
-    
-    intent = "CONTINUE_CHAT"
-    if "Intent: END_CHAT" in answer:
-        intent = "END_CHAT"
-        answer = answer.replace("Intent: END_CHAT", "")
-        
-    elif "Intent: CONTINUE_CHAT" in answer:
-        answer = answer.replace("Intent: CONTINUE_CHAT", "")
+    if parsed:
+        # LLM returned valid JSON - use its fields, falling back to our
+        # own sentiment analysis (parsed.get("sentiment") is the LLM's own
+        # guess, which is usually less reliable than the dedicated model).
+        answer = parsed.get("answer", raw_output)
+        intent = parsed.get("intent", "CONTINUE_CHAT")
+    else:
+        # LLM didn't return parseable JSON this time - show the raw text
+        # rather than crashing, and default to CONTINUE_CHAT rather than
+        # guessing the conversation should end.
+        answer = raw_output
+        intent = "CONTINUE_CHAT"
 
     return {
         "answer": answer,
         "sentiment": sentiment,
-        "date&time": datetime,
         "intent": intent
     }
-
-

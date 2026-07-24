@@ -6,24 +6,41 @@ from schemas import ChatRequest, ChatResponse # type: ignore
 from models import chatmessages, chatsession
 from services.chat_service import process_chat_messages
 
-chat_router = APIRouter()
+
+chat_router = APIRouter(
+    prefix="/api",
+    tags=["Chat"]
+)
 
 
 @chat_router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest, db: Session = Depends(get_db)):
-    
-    if request.session_id is None:
+  
+    if request.session_id is None or request.session_id <= 0:
         new_session = chatsession(status="ACTIVE")
         db.add(new_session)
         db.commit()
         db.refresh(new_session)
         session_id = new_session.session_id
     else:
-        session_id = request.session_id
+        existing_session = db.query(chatsession).filter(
+            chatsession.session_id == request.session_id,
+            chatsession.status == "ACTIVE"
+        ).first()
+        
+        if existing_session is None:
+            new_session = chatsession(status="ACTIVE")
+            db.add(new_session)
+            db.commit()
+            db.refresh(new_session)
+            session_id = new_session.session_id
+        else:
+            session_id = request.session_id
 
     history = (
         db.query(chatmessages)
         .filter(chatmessages.session_id == session_id)
+        .order_by(chatmessages.created_at.asc())  
         .all()
     )
 
@@ -34,7 +51,6 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
         db=db
     )
 
-
     db.add(
         chatmessages(
             session_id=session_id,
@@ -43,7 +59,6 @@ def chat(request: ChatRequest, db: Session = Depends(get_db)):
             sentiment=result["sentiment"]
         )
     )
-
 
     db.add(
         chatmessages(

@@ -4,6 +4,7 @@ from api.chat import chat_router
 from api.load_kb import load_kb_router
 from api.auth import auth_router
 from api.feedback import feedback_router
+from api.logout import logout_router
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 
@@ -28,3 +29,4 @@ app.include_router(chat_router)
 app.include_router(load_kb_router)
 app.include_router(auth_router)
 app.include_router(feedback_router)
+app.include_router(logout_router)
